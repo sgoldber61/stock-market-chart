@@ -1,6 +1,7 @@
-var express = require('express');
-var path = require('path');
-var app = express();
+const dotenv = require('dotenv').config();
+const express = require('express');
+const path = require('path');
+const app = express();
 
 app.use('/', express.static(`${__dirname}/build`));
 
@@ -10,3 +11,4 @@ app.get('*', (req, res) => {
 });
 
 app.listen(process.env.PORT || 8080);
+
