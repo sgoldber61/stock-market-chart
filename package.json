@@ -5,9 +5,9 @@
     "postinstall": "npm install --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "cd client && npm run build",
-    "server": "nodemon server.js",
+    "server": "nodemon index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "prod": "node server.js",
+    "prod": "node index.js",
     "web": "npm run client && npm run prod",
     "start": "npm run web"
   },
