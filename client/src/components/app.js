@@ -19,7 +19,7 @@ export default class App extends Component {
   
   componentDidMount() {
     // initialize stock data by connecting to server
-    socket = io.connect('http://localhost:8080');
+    socket = io.connect(process.env.REACT_APP_url);
     
     socket.on('setState', (updater) => {
       this.setState(updater);
