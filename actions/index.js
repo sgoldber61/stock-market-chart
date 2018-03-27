@@ -1,20 +1,20 @@
-import axios from 'axios';
-import Queue from 'simple-promise-queue';
+const axios = require('axios');
+const Queue = require('simple-promise-queue');
 
 function getURL(stockName) {
-  return `https://cors-anywhere.herokuapp.com/https://www.quandl.com/api/v3/datasets/WIKI/${stockName}/data.json`;
+  return `https://www.quandl.com/api/v3/datasets/WIKI/${stockName}/data.json`;
 }
 
 const params = {
   order: 'asc',
   column_index: 11, // stock data for adjusted close
-  api_key: process.env.REACT_APP_quandlApiKey
+  api_key: process.env.quandlApiKey
 };
 
 
 // get a single stock
 
-export function getStock(stockName) {
+function getStock(stockName) {
   return axios.get(getURL(stockName), {params}).then((response) => {
     if (response.data.quandl_error) {
       return Promise.reject(response.data.quandl_error);
@@ -36,8 +36,7 @@ export function getStock(stockName) {
 // get multiple stocks
 // see https://stackoverflow.com/questions/42896456/get-which-promise-completed-in-promise-race for dealing with a queue of simultaneous promises
 
-
-export function getStocks(stockNames) {
+function getStocks(stockNames) {
   const queue = new Queue({
     autoStart: true,
     concurrency: 2
@@ -54,4 +53,7 @@ export function getStocks(stockNames) {
   
   return Promise.all(promiseArray);
 }
+
+
+module.exports = {getStock, getStocks};
 

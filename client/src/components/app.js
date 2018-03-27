@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
+import io from 'socket.io-client';
 import StockChart from './stock_chart';
 import StockList from './stock_list';
 import NewStock from './new_stock';
 import Errors from './errors';
-import * as actions from '../actions';
+
+let socket;
 
 export default class App extends Component {
   constructor(props) {
-    // props contains initialStockNames array
     super(props);
     
     this.state = {};
@@ -17,30 +18,20 @@ export default class App extends Component {
   }
   
   componentDidMount() {
-    actions.getStocks(this.props.initialStockNames).then((stockData) => {
-      this.setState({stockData, initialized: true});
-    }).catch((error) => {
-      console.log(error.message);
-      this.setState({error});
+    // initialize stock data by connecting to server
+    socket = io.connect('http://localhost:8080');
+    
+    socket.on('setState', (updater) => {
+      this.setState(updater);
     });
   }
   
   addStock(stockName) {
-    stockName = stockName.toUpperCase();
-    
-    actions.getStock(stockName).then((stockDataElement) => {
-      const newStockData = [...this.state.stockData, stockDataElement];
-      this.setState({stockData: newStockData, error: null});
-    }).catch((error) => {
-      console.log(error.message);
-      this.setState({error});
-    });
+    socket.emit('add', stockName);
   }
   
-  removeStock(index) {
-    const newStockData = [...this.state.stockData];
-    newStockData.splice(index, 1);
-    this.setState({stockData: newStockData, error: null});
+  removeStock(stockName) {
+    socket.emit('remove', stockName);
   }
   
   render() {

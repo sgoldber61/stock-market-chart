@@ -5,11 +5,11 @@ export default (props) => {
   
   return (
     <ul className="list-group">
-      {props.stockData.map((element, index) => {
+      {props.stockData.map((element) => {
         return (
-          <li className="list-group-item" key={index}>
+          <li className="list-group-item" key={element.name}>
             {element.name}
-            <button type="button" className="close" aria-label="Close" onClick={(event) => {props.removeStock(index);}}>
+            <button type="button" className="close" aria-label="Close" onClick={(event) => {props.removeStock(element.name);}}>
               <span aria-hidden="true">&times;</span>
             </button>
           </li>

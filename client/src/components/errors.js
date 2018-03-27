@@ -4,7 +4,7 @@ export default (props) => {
   if (props.error) {
     return (
       <div>
-        {props.error.message}
+        {props.error}
       </div>
     );  
   }
